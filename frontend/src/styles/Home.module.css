@@ -1,0 +1,115 @@
+/* styles/Home.module.css */
+.home {
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #f3f4f6;
+  }
+  
+  .heading {
+    text-align: center;
+    color: #1f2937;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  .options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .button {
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .testdevButton {
+    background-color: #3b82f6;
+  }
+  
+  .testdevButton:hover {
+    background-color: #2563eb;
+  }
+  
+  .customerButton {
+    background-color: #22c55e;
+  }
+  
+  .customerButton:hover {
+    background-color: #16a34a;
+  }
+  
+  .resultNotification {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #22c55e;
+    max-width: 24rem;
+    z-index: 50;
+  }
+  
+  .resultHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+  
+  .resultTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .score {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #22c55e;
+    margin-top: 0.5rem;
+  }
+  
+  .timestamp {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0.25rem;
+  }
+  
+  .closeButton:hover {
+    color: #374151;
+  }
+  
+  .modalOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 40;
+  }
