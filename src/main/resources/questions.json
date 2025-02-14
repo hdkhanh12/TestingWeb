@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "type": "multichoice",
+    "category": "Math",
+    "subCategory": "Algebra",
+    "content": "What is 2+2?",
+    "optionAnswers": ["2", "3", "4", "5"],
+    "answers": ["4"]
+  },
+  {
+    "id": "2",
+    "type": "oral",
+    "category": "History",
+    "subCategory": "WWII",
+    "content": "Who was Adolf Hitler?",
+    "answers": ["The leader of Nazi Germany"]
+  },
+  {
+    "id": "3",
+    "type": "scale",
+    "category": "Science",
+    "subCategory": "Physics",
+    "content": "On a scale of 1 to 10, how would you rate the temperature?",
+    "answers": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+  },
+  {
+    "id": "4",
+    "type": "multichoice",
+    "category": "Literature",
+    "subCategory": "Poetry",
+    "content": "Who wrote 'Hamlet'?",
+    "optionAnswers": ["Jane Austen", "William Shakespeare", "Charles Dickens", "Emily Bronte"],
+    "answers": ["William Shakespeare"]
+  },
+  {
+    "id": "5",
+    "type": "oral",
+    "category": "Programming",
+    "subCategory": "Java",
+    "content": "What is object-oriented programming?",
+    "answers": ["A programming paradigm based on the concept of objects, which can contain data and code"]
+  },
+  {
+    "id": "6",
+    "type": "scale",
+    "category": "Technology",
+    "subCategory": "AI",
+    "content": "On a scale of 1 to 5, how would you rate your understanding of Artificial Intelligence?",
+    "answers": ["1", "2", "3", "4", "5"]
+  }
+]
