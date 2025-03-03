@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends ElasticsearchRepository<User, String> {
     Optional<User> findByUsername(String username);
+    Optional<User> findByPhoneNumber(String phoneNumber);
+    Optional<User> findById(String id);
 }

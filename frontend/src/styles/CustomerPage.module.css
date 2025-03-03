@@ -1,0 +1,118 @@
+/* styles/CustomerPage.module.css */
+.container {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.welcome {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.testAttempts {
+  font-size: 20px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.testList {
+  list-style: none;
+  padding: 0;
+}
+
+.testItem {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.testItem:hover {
+  background: #f8f9fa;
+}
+
+.testName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.testDescription {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Khoảng cách giữa các nút */
+  margin-top: 20px;
+}
+
+.rechargeButton {
+  background: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.rechargeButton:hover {
+  background: #218838;
+}
+
+.resultsButton {
+  background: #007bff; /* Màu xanh dương cho nút Xem kết quả */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.resultsButton:hover {
+  background: #0056b3;
+}
+
+.logoutButton {
+  background: #dc3545; /* Màu đỏ cho nút Đăng xuất */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logoutButton:hover {
+  background: #c82333;
+}
+
+.loading {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 50px;
+}

@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
@@ -115,9 +116,9 @@ public class TestService {
 
 
 
-    public Test createTestWithPercentage(String id, String name, String description, int multichoicePercentage, int oralPercentage, int scalePercentage) {
-        log.info("Creating test with id: {}, name: {}, description: {}, multichoicePercentage: {}, oralPercentage: {}, scalePercentage: {}",
-                id, name, description, multichoicePercentage, oralPercentage, scalePercentage);
+    public Test createTestWithPercentage(String id, String name, String description, int multichoicePercentage, int oralPercentage, int scalePercentage, String packageId) {
+        log.info("Creating test with id: {}, name: {}, description: {}, multichoicePercentage: {}, oralPercentage: {}, scalePercentage: {}, packageId: {}",
+                id, name, description, multichoicePercentage, oralPercentage, scalePercentage, packageId);
 
         Test test;
 
@@ -130,9 +131,28 @@ public class TestService {
             log.debug("Creating new test with id: {}", id);
         }
 
-        List<Question> allMultichoiceQuestions = questionRepository.findByType("multichoice");
-        List<Question> allOralQuestions = questionRepository.findByType("oral");
-        List<Question> allScaleQuestions = questionRepository.findByType("scale");
+        // Lấy câu hỏi theo packageId nếu có, nếu không thì lấy tất cả
+        List<Question> availableQuestions = packageId != null && !packageId.isEmpty()
+                ? questionRepository.findByPackageId(packageId)
+                : StreamSupport.stream(questionRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+
+        if (availableQuestions.isEmpty()) {
+            log.warn("No questions found for packageId: {}", packageId);
+            throw new IllegalArgumentException("No questions available for the selected package");
+        }
+
+        // Lọc câu hỏi theo loại
+        List<Question> allMultichoiceQuestions = availableQuestions.stream()
+                .filter(q -> "multichoice".equals(q.getType()))
+                .collect(Collectors.toList());
+        List<Question> allOralQuestions = availableQuestions.stream()
+                .filter(q -> "oral".equals(q.getType()))
+                .collect(Collectors.toList());
+        List<Question> allScaleQuestions = availableQuestions.stream()
+                .filter(q -> "scale".equals(q.getType()))
+                .collect(Collectors.toList());
+
         List<Question> selectedQuestions = new ArrayList<>();
 
         int totalQuestions = 20;
@@ -142,6 +162,7 @@ public class TestService {
 
         log.debug("Selecting questions: multichoiceCount={}, oralCount={}, scaleCount={}", multichoiceCount, oralCount, scaleCount);
 
+        // Chọn ngẫu nhiên câu hỏi từ danh sách đã lọc
         if (allMultichoiceQuestions.size() > 0) {
             selectedQuestions.addAll(getRandomQuestions(allMultichoiceQuestions, multichoiceCount));
         }
@@ -153,19 +174,29 @@ public class TestService {
         }
 
         test.setName(name);
+        //test.setDescription(description);
         test.setQuestions(selectedQuestions);
+        //test.setMultichoicePercentage(multichoicePercentage);
+        //test.setOralPercentage(oralPercentage);
+        //test.setScalePercentage(scalePercentage);
 
         Test savedTest = testRepository.save(test);
         log.info("Successfully created/updated test with id: {}", savedTest.getId());
         return savedTest;
     }
-
     public Test getTest(String id) {
         log.info("Getting test with id: {}", id);
         return testRepository.findById(id).orElseThrow(() -> {
             log.warn("Test not found with id: {}", id);
             return new NoSuchElementException("Test not found with id: " + id);
         });
+    }
+
+
+    public List<Test> getPublicTest() {
+        log.info("Getting public test for customer");
+        // Giả sử bạn có một trường "isPublic" trong TestSuite để lọc các đề thi công khai
+        return testRepository.findByIsPublicTrue();
     }
 
     private List<Question> getRandomQuestions(List<Question> list, int count) {
@@ -315,5 +346,41 @@ public class TestService {
             throw e;
         }
 
+    }
+    public void deleteTestResult(String resultId) {
+        log.info("Deleting test result with ID: {}", resultId);
+        try {
+            // Kiểm tra xem document có tồn tại không
+            if (!testResultRepository.existsById(resultId)) {
+                log.warn("Test result with ID: {} not found", resultId);
+                throw new IllegalArgumentException("Test result not found");
+            }
+            // Xóa document từ Elasticsearch
+            testResultRepository.deleteById(resultId);
+            log.info("Successfully deleted test result with ID: {}", resultId);
+        } catch (Exception e) {
+            log.error("Error deleting test result with ID: {}", resultId, e);
+            throw e;
+        }
+    }
+
+    public List<Test> getTestsForCustomer(String customerId) {
+        log.info("Fetching tests for customer: {}", customerId);
+
+        // Lấy bài thi gốc từ TESTDEV (customerId = null)
+        List<Test> originalTests = testRepository.findByCustomerIdIsNull();
+
+        if (originalTests.isEmpty()) {
+            log.warn("No original tests found in database");
+            return Collections.emptyList();
+        }
+
+        log.info("Returning {} original tests for customer: {}", originalTests.size(), customerId);
+        return originalTests;
+    }
+
+    public List<TestResult> getResultsByCustomerId(String customerId) {
+        log.info("Fetching test results for customer: {}", customerId);
+        return testResultRepository.findByCustomerId(customerId);
     }
 }

@@ -1,60 +1,113 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import styles from "../styles/AddTestModal.module.css";
+
+interface TestSuite {
+  id: string;
+  name: string;
+  description: string;
+}
+
 interface AddTestModalProps {
-    closeModal: () => void;
-     onTestAdded: () => void;
+  closeModal: () => void;
+  onTestAdded: () => void;
 }
 
 export const AddTestModal: React.FC<AddTestModalProps> = ({ closeModal, onTestAdded }) => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
 
-     const handleAddTest = async () => {
-         if (name && description) {
-          try {
-                const response = await fetch('http://localhost:8080/api/testsuites', {
-                   method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                     body: JSON.stringify({name, description})
-                 });
-                console.log('handleAddTest response:', response);
-               if(!response.ok) {
-                   throw new Error(`HTTP error! Status: ${response.status}`);
-               }
-             alert('Thêm test thành công');
-               
-           closeModal();
-           onTestAdded();
-        } catch (error) {
-                console.error('Lỗi fetching test: ', error);
-                alert('Fetching test thất bại');
-        }
-         } else {
-            alert('Nhập tên và mô tả');
-         }
+  const fetchCsrfToken = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch CSRF token: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Fetched CSRF token:", data.token);
+      return data.token;
+    } catch (error) {
+      console.error("Error fetching CSRF token:", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    const loadCsrfToken = async () => {
+      try {
+        const token = await fetchCsrfToken();
+        setCsrfToken(token);
+      } catch (error) {
+        alert("Không thể lấy CSRF token. Vui lòng thử lại.");
+      }
     };
-    return (
-        <div className="modal">
-            <div className="modal-content">
-              <h2>Thêm Test</h2>
-                <input
-                   type="text"
-                   value={name}
-                   onChange={(e) => setName(e.target.value)}
-                   placeholder="Nhập tên test"
-                 />
-                <input
-                   type="text"
-                   value={description}
-                   onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Nhập mô tả"
-                />
-                 <div className="modal-buttons">
-                   <button onClick={handleAddTest}>Thêm</button>
-                    <button onClick={closeModal}>Đóng</button>
-                </div>
-            </div>
-        </div>
-    );
+    loadCsrfToken();
+  }, []);
+
+  const handleAddTest = async () => {
+    const testData = { name, description };
+    try {
+      if (!csrfToken) {
+        console.error("CSRF token not available");
+        alert("CSRF token không sẵn sàng. Vui lòng thử lại.");
+        return;
+      }
+      console.log("CSRF token before POST:", csrfToken);
+      console.log("Cookies before POST:", document.cookie);
+
+      const response = await fetch("http://localhost:8080/api/testsuites", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+          "X-XSRF-TOKEN": csrfToken
+        },
+        body: JSON.stringify(testData),
+      });
+
+      console.log("POST response status:", response.status);
+      if (!response.ok) {
+        console.error("POST failed with status:", response.status);
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const newTest = await response.json();
+      console.log("Test added:", newTest);
+      onTestAdded();
+      closeModal();
+    } catch (error) {
+      console.error("Error adding test:", error);
+      alert("Failed to add test: " + error);
+    }
+  };
+
+  return (
+    <div className={styles.modal}>
+      <h2>Thêm Test Mới</h2>
+      <input
+        type="text"
+        placeholder="Tên test"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className={styles.input} // Dùng style từ EditTestPage
+      />
+      
+      <button
+        onClick={handleAddTest}
+        disabled={!csrfToken}
+        className={styles.button} // Dùng style từ EditTestPage
+      >
+        Thêm
+      </button>
+      <button
+        onClick={closeModal}
+        className={styles.button} // Dùng style từ EditTestPage
+      >
+        Hủy
+      </button>
+    </div>
+  );
 };

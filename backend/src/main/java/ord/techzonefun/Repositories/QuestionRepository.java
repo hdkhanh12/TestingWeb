@@ -10,5 +10,8 @@ public interface QuestionRepository extends ElasticsearchRepository<Question, St
     @Query("{\"terms\": {\"testIds\": [\"?0\"]}}")
     List<Question> findQuestionByTestId(String testId);
 
+    List<Question> findByPackageId(String packageId); // Thêm để tìm theo packageId
+    List<Question> findByPackageName(String packageName); // Thêm để tìm theo packageName
+
 
 }

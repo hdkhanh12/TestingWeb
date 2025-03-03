@@ -1,11 +1,13 @@
 package ord.techzonefun.Controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import ord.techzonefun.Entities.TestSuite;
 import ord.techzonefun.Services.TestSuiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j; // 1. Import
 
@@ -17,22 +19,36 @@ import java.util.NoSuchElementException;
 @CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class TestSuiteController {
-    // Hiện chưa được dùng tới vì theo logic hiện tại thì testsuite chỉ là nơi lưu trữ các test. chỉ có duy nhất
     @Autowired
     private TestSuiteService testSuiteService;
 
     @PostMapping
-    public ResponseEntity<TestSuite> createTestSuite(@Valid @RequestBody TestSuite testSuite) {
-        log.info("Received request to create test suite: {}", testSuite); //  Log request body
+    public ResponseEntity<TestSuite> createTestSuite(
+            @Valid @RequestBody TestSuite testSuite,
+            HttpServletRequest request,
+            Authentication authentication) {
+        // Log thông tin request và session
+        log.info("POST /api/testsuites - Received request to create test suite: {}", testSuite);
+        log.info("Session ID: {}", request.getSession(false) != null ? request.getSession(false).getId() : "No session");
+        log.info("Cookies: {}", request.getHeader("Cookie") != null ? request.getHeader("Cookie") : "No cookies");
+
+        // Log CSRF token
+        log.info("CSRF token expected: {}", request.getAttribute("_csrf") != null ? request.getAttribute("_csrf") : "Not available");
+        log.info("CSRF token received: {}", request.getHeader("X-XSRF-TOKEN") != null ? request.getHeader("X-XSRF-TOKEN") : "Not provided");
+
+        // Log thông tin xác thực
+        log.info("User: {}, Roles: {}",
+                authentication != null ? authentication.getName() : "anonymous",
+                authentication != null ? authentication.getAuthorities() : "none");
+
         try {
             TestSuite createdTestSuite = testSuiteService.createTestSuite(testSuite);
-            log.info("Test suite created successfully. TestSuite ID: {}", createdTestSuite.getId()); //  Log ID
+            log.info("Test suite created successfully. TestSuite ID: {}", createdTestSuite.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdTestSuite);
         } catch (Exception e) {
-            log.error("Error creating test suite", e); //  Log lỗi và stack trace
+            log.error("Error creating test suite", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     @GetMapping

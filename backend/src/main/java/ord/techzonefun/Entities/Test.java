@@ -13,6 +13,7 @@ import java.util.List;
 public class Test {
     @Id
     private String id;
+    private boolean isPublic;
 
     @NotBlank(message = "Test name cannot be blank")
     @Field(type = FieldType.Text, name = "name")
@@ -29,6 +30,9 @@ public class Test {
 
     @Field(type = FieldType.Object, name="questions")
     private List<Question> questions;
+
+    @Field(type = FieldType.Text)
+    private String customerId; // Thêm trường để liên kết với Customer
 
     // Constructor không tham số
     public Test() {}
@@ -91,4 +95,12 @@ public class Test {
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
+
+    public boolean isPublic() { return isPublic; }
+
+    public void setPublic(boolean isPublic) { this.isPublic = isPublic; }
+
+    public String getCustomerId() { return customerId; }
+
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
 }

@@ -1,0 +1,68 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .description {
+    font-size: 1.2rem;
+    color: #4b5563;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .selectContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .select {
+    width: 70%;
+  }
+  
+  .button {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #1e40af;
+  }
+  
+  .questionList {
+    margin-top: 20px;
+  }
+  
+  .saveButton {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #059669;
+    margin-top: 20px;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #4b5563;
+  }
+  

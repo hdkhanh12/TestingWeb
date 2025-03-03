@@ -1,0 +1,76 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9fafb;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+    color: #374151;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+  }
+  
+  .percentageInputs {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .button {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #1e40af;
+  }
+  
+  .buttonSecondary {
+    background-color: #059669;
+  }
+  
+  .questionList {
+    margin-top: 20px;
+  }
+  
+  .empty {
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+  }
+  

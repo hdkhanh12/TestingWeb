@@ -18,6 +18,10 @@ public class Question {
     private String[] options;
     @Field(type = FieldType.Text)
     private String answer;
+    @Field(type = FieldType.Keyword)
+    private String packageId;
+    @Field(type = FieldType.Text)
+    private String packageName;
     // getters and setters
     public String getId() {
         return id;
@@ -58,4 +62,14 @@ public class Question {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
+
+    public String getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(String packageId) {
+        this.packageId = packageId;
+    }
+    public String getPackageName() { return packageName; }
+    public void setPackageName(String packageName) { this.packageName = packageName; }
 }

@@ -8,4 +8,5 @@ import java.util.List;
 public interface TestResultRepository extends ElasticsearchRepository<TestResult, String> {
     List<TestResult> findAll();
     List<TestResult> findByTestId(String testId);
+    List<TestResult> findByCustomerId(String customerId);
 }

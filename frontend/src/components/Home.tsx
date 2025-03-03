@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { TestdevModal } from './TestdevModal';
-import { CustomerModal } from './CustomerModal';
+import { useRouter } from 'next/router';  
+import { FaUserCog } from 'react-icons/fa';
 import styles from '../styles/Home.module.css';
 
 interface TestResult {
@@ -10,9 +10,8 @@ interface TestResult {
 }
 
 function Home() {
-  const [showTestdevModal, setShowTestdevModal] = useState(false);
-  const [showCustomerModal, setShowCustomerModal] = useState(false);
   const [testResult, setTestResult] = useState<TestResult | null>(null);
+  const router = useRouter(); 
 
   useEffect(() => {
     const result = localStorage.getItem('testResult');
@@ -23,11 +22,11 @@ function Home() {
   }, []);
 
   const handleTestdevClick = () => {
-    setShowTestdevModal(true);
+    router.push('/testdev/login');  
   };
 
   const handleCustomerClick = () => {
-    setShowCustomerModal(true);
+    router.push('/customer/login');  
   };
 
   const handleCloseResult = () => {
@@ -64,33 +63,23 @@ function Home() {
         Hệ thống thi trắc nghiệm
       </h1>
 
+      {/* Icon Testdev ở góc trên bên phải */}
+      <button
+        onClick={handleTestdevClick}
+        className={styles.testdevIcon}
+        title="Testdev Login"
+      >
+        <FaUserCog size={30} />
+      </button>
+
       <div className={styles.options}>
-        <button
-          onClick={handleTestdevClick}
-          className={`${styles.button} ${styles.testdevButton}`}
-        >
-          Testdev
-        </button>
-        
         <button
           onClick={handleCustomerClick}
           className={`${styles.button} ${styles.customerButton}`}
         >
-          Customer
+          Nhấn vào đây để bắt đầu bài thi
         </button>
       </div>
-
-      {showTestdevModal && (
-        <div className={styles.modalOverlay}>
-          <TestdevModal closeModal={() => setShowTestdevModal(false)} />
-        </div>
-      )}
-      
-      {showCustomerModal && (
-        <div className={styles.modalOverlay}>
-          <CustomerModal closeModal={() => setShowCustomerModal(false)} />
-        </div>
-      )}
     </div>
   );
 }

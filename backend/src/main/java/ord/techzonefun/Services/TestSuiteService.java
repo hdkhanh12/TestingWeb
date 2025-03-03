@@ -13,7 +13,7 @@ import java.util.stream.StreamSupport;
 
 
 @Service
-@Slf4j // 2. Thêm annotation
+@Slf4j
 public class TestSuiteService {
     @Autowired
     private TestSuiteRepository testSuiteRepository;
@@ -120,4 +120,5 @@ public class TestSuiteService {
             throw e; // Re-throw
         }
     }
+
 }

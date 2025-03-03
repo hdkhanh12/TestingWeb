@@ -1,0 +1,56 @@
+.loginContainer {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .loginForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formGroup {
+    margin-bottom: 15px;
+  }
+  
+  .formGroup label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .formGroup input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .submitButton {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .submitButton:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
