@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/CustomerPage.module.css';
+import { BACKEND_URL } from '../../config';
 
 interface Customer {
   id: string;
@@ -25,7 +26,7 @@ const CustomerPage: React.FC = () => {
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -60,7 +61,7 @@ const CustomerPage: React.FC = () => {
 
       try {
         // Fetch thông tin khách hàng
-        const customerResponse = await fetch(`http://localhost:8080/api/customers/${id}`, {
+        const customerResponse = await fetch(`${BACKEND_URL}/api/customers/${id}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -79,7 +80,7 @@ const CustomerPage: React.FC = () => {
         localStorage.setItem('customerId', customerData.id); // Lưu customerId
 
         // Fetch danh sách bài kiểm tra gốc từ TESTDEV
-        const testsResponse = await fetch(`http://localhost:8080/api/testsuites`, {
+        const testsResponse = await fetch(`${BACKEND_URL}/api/testsuites`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -128,7 +129,7 @@ const CustomerPage: React.FC = () => {
   const handleLogout = async () => {
     try {
       const token = await fetchCsrfToken();
-      const response = await fetch("http://localhost:8080/api/auth/logout", {
+      const response = await fetch("${BACKEND_URL}/api/auth/logout", {
         method: "POST",
         credentials: "include",
         headers: {

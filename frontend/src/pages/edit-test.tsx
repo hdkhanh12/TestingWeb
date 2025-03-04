@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import QuestionItem from '../components/QuestionItem';
 import { AddQuestionModal } from '../components/AddQuestionModal';
 import styles from '../styles/EditTestPage.module.css';
+import { BACKEND_URL } from '../config';
 
 
 interface Question {
@@ -38,7 +39,7 @@ const EditTestPage = () => {
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -65,7 +66,7 @@ const EditTestPage = () => {
   const fetchPackages = async () => {
     try {
       const csrfToken = await fetchCsrfToken();
-      const response = await fetch('http://localhost:8080/api/questions', {
+      const response = await fetch('${BACKEND_URL}/api/questions', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -99,7 +100,7 @@ const EditTestPage = () => {
     if (!testSuiteId) return;
     try {
       const csrfToken = await fetchCsrfToken();
-      const response = await fetch(`http://localhost:8080/api/tests/detail/${testSuiteId}`, {
+      const response = await fetch(`${BACKEND_URL}/api/tests/detail/${testSuiteId}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -135,7 +136,7 @@ const EditTestPage = () => {
         return;
       }
 
-      const url = new URL('http://localhost:8080/api/tests/createWithPercentage');
+      const url = new URL('${BACKEND_URL}/api/tests/createWithPercentage');
       const params = {
         id: testSuiteId,
         name: testName,
@@ -187,7 +188,7 @@ const EditTestPage = () => {
       console.log("CSRF token before PUT:", csrfToken);
       console.log("Cookies before PUT:", document.cookie);
 
-      const response = await fetch(`http://localhost:8080/api/testsuites/${testSuiteId}`, {
+      const response = await fetch(`${BACKEND_URL}/api/testsuites/${testSuiteId}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {

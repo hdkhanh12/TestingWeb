@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../styles/TestResultsPage.module.css';
+import { BACKEND_URL } from '../config';
 
 interface TestResult {
     id: string;
@@ -20,7 +21,7 @@ const TestResultsPage = () => {
 
     const fetchCsrfToken = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/csrf', {
+            const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
                 method: 'GET',
                 credentials: 'include',
             });

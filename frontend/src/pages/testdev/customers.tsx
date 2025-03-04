@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/TestResultsPage.module.css';
+import { BACKEND_URL } from '../../config';
 
 interface CustomerInfo {
   id: string;
@@ -35,7 +36,7 @@ const CustomersPage: React.FC = () => {
   const fetchCustomers = async () => {
     try {
       const csrfToken = await fetchCsrfToken();
-      const response = await fetch('http://localhost:8080/api/auth/customers', {
+      const response = await fetch('${BACKEND_URL}/api/auth/customers', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -66,7 +67,7 @@ const CustomersPage: React.FC = () => {
 
     try {
       const csrfToken = await fetchCsrfToken();
-      const response = await fetch(`http://localhost:8080/api/auth/customers/${customerId}`, {
+      const response = await fetch(`${BACKEND_URL}/api/auth/customers/${customerId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/AdminQuestionsPage.module.css';
+import { BACKEND_URL } from '../../config';
 
 interface Question {
   id: string;
@@ -24,7 +25,7 @@ const QuestionsByPackagePage = () => {
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -45,8 +46,8 @@ const QuestionsByPackagePage = () => {
       try {
         const csrfToken = await fetchCsrfToken();
         const url = packageId === 'no-package'
-          ? 'http://localhost:8080/api/questions'
-          : `http://localhost:8080/api/questions/package/${packageId}`; // Dùng packageId
+          ? '${BACKEND_URL}/api/questions'
+          : `${BACKEND_URL}/api/questions/package/${packageId}`; // Dùng packageId
         const response = await fetch(url, {
           method: 'GET',
           credentials: 'include',
@@ -96,7 +97,7 @@ const QuestionsByPackagePage = () => {
       try {
         const csrfToken = await fetchCsrfToken();
         const deletePromises = Array.from(selectedQuestions).map(id =>
-          fetch(`http://localhost:8080/api/questions/${id}`, {
+          fetch(`${BACKEND_URL}/api/questions/${id}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: {
@@ -124,7 +125,7 @@ const QuestionsByPackagePage = () => {
     if (window.confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')) {
       try {
         const csrfToken = await fetchCsrfToken();
-        const response = await fetch(`http://localhost:8080/api/questions/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/api/questions/${id}`, {
           method: 'DELETE',
           credentials: 'include',
           headers: {

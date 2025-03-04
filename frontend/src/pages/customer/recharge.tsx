@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/RechargePage.module.css';
+import { BACKEND_URL } from '../../config';
 
 const RechargePage: React.FC = () => {
   const [step, setStep] = useState(1); // 1: QR, 2: Nhập nội dung
@@ -12,7 +13,7 @@ const RechargePage: React.FC = () => {
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -39,7 +40,7 @@ const RechargePage: React.FC = () => {
         return;
       }
       const csrfToken = await fetchCsrfToken();
-      const response = await fetch(`http://localhost:8080/api/customers/${customerId}/recharge`, {
+      const response = await fetch(`${BACKEND_URL}/api/customers/${customerId}/recharge`, {
         method: 'POST',
         credentials: 'include',
         headers: {

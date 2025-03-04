@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BACKEND_URL } from '../config';
 
 interface AddQuestionModalProps {
    closeModal: () => void;
@@ -11,7 +12,7 @@ export const AddQuestionModal: React.FC<AddQuestionModalProps> = ({ closeModal, 
  const handleAddQuestion = async () => {
   if(id) {
      try {
-          const response = await fetch(`http://localhost:8080/api/questions/${id}`);
+          const response = await fetch(`${BACKEND_URL}/api/questions/${id}`);
            if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }

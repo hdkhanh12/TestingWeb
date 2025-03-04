@@ -4,6 +4,7 @@ import { EditTestModal } from "./EditTestModal";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../styles/TestSuiteManager.module.css";
+import { BACKEND_URL } from '../config';
 
 interface TestSuite {
   id: string;
@@ -32,7 +33,7 @@ const TestSuiteManager = () => {
   const fetchTestSuites = useCallback(async () => {
     try {
       const csrfToken = getCsrfToken();
-      const response = await fetch('http://localhost:8080/api/testsuites', {
+      const response = await fetch('${BACKEND_URL}/api/testsuites', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -60,7 +61,7 @@ const TestSuiteManager = () => {
 
   const fetchCsrfToken = async () => {
     try {
-        const response = await fetch('http://localhost:8080/api/auth/csrf', {
+        const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
             method: 'GET',
             credentials: 'include',
         });
@@ -86,7 +87,7 @@ const handleDeleteTestClick = async (testId: string) => {
         console.log("CSRF token before DELETE:", csrfToken);
         console.log("Cookies before DELETE:", document.cookie);
 
-        const response = await fetch(`http://localhost:8080/api/testsuites/${testId}`, {
+        const response = await fetch(`${BACKEND_URL}/api/testsuites/${testId}`, {
             method: "DELETE",
             credentials: 'include',
             headers: {

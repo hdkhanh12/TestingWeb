@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import QuestionItem from '../../components/QuestionItem';
 import Select from 'react-select';
-import styles from '../../styles/EditTestPage.module.css'; 
+import styles from '../../styles/EditTestPage.module.css';
+import { BACKEND_URL } from '../../config';
 
 interface TestPageProps {
     testId: string;
@@ -23,7 +24,7 @@ const TestPage: React.FC<TestPageProps> = () => {
 
     const fetchCsrfToken = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/csrf', {
+            const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -43,7 +44,7 @@ const TestPage: React.FC<TestPageProps> = () => {
         const fetchTest = async () => {
             try {
                 const csrfToken = await fetchCsrfToken();
-                const response = await fetch(`http://localhost:8080/api/tests/${testId}`, {
+                const response = await fetch(`${BACKEND_URL}/api/tests/${testId}`, {
                     method: 'GET',
                     credentials: 'include', 
                     headers: {
@@ -66,7 +67,7 @@ const TestPage: React.FC<TestPageProps> = () => {
         const fetchQuestions = async () => {
             try {
                 const csrfToken = await fetchCsrfToken();
-                const response = await fetch(`http://localhost:8080/api/questions`, {
+                const response = await fetch(`${BACKEND_URL}/api/questions`, {
                     method: 'GET',
                     credentials: 'include', 
                     headers: {
@@ -101,7 +102,7 @@ const TestPage: React.FC<TestPageProps> = () => {
         if (selectedQuestion) {
             try {
                 const csrfToken = await fetchCsrfToken();
-                const response = await fetch(`http://localhost:8080/api/tests/${testId}/questions/${selectedQuestion.value}`, {
+                const response = await fetch(`${BACKEND_URL}/api/tests/${testId}/questions/${selectedQuestion.value}`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -115,7 +116,7 @@ const TestPage: React.FC<TestPageProps> = () => {
                 }
 
                 const data = await response.json();
-                const responseQuestion = await fetch(`http://localhost:8080/api/questions/${selectedQuestion.value}`, {
+                const responseQuestion = await fetch(`${BACKEND_URL}/api/questions/${selectedQuestion.value}`, {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
@@ -151,7 +152,7 @@ const TestPage: React.FC<TestPageProps> = () => {
     const handleDeleteQuestion = async (questionId: string) => {
         try {
             const csrfToken = await fetchCsrfToken();
-            const response = await fetch(`http://localhost:8080/api/tests/${testId}/questions/${questionId}`, {
+            const response = await fetch(`${BACKEND_URL}/api/tests/${testId}/questions/${questionId}`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -179,7 +180,7 @@ const TestPage: React.FC<TestPageProps> = () => {
     const handleSaveTest = async () => {
         try {
             const csrfToken = await fetchCsrfToken();
-            const response = await fetch(`http://localhost:8080/api/tests/${testId}`, {
+            const response = await fetch(`${BACKEND_URL}/api/tests/${testId}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/AddTestModal.module.css";
+import { BACKEND_URL } from '../config';
 
 interface TestSuite {
   id: string;
@@ -19,7 +20,7 @@ export const AddTestModal: React.FC<AddTestModalProps> = ({ closeModal, onTestAd
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -58,7 +59,7 @@ export const AddTestModal: React.FC<AddTestModalProps> = ({ closeModal, onTestAd
       console.log("CSRF token before POST:", csrfToken);
       console.log("Cookies before POST:", document.cookie);
 
-      const response = await fetch("http://localhost:8080/api/testsuites", {
+      const response = await fetch("${BACKEND_URL}/api/testsuites", {
         method: "POST",
         credentials: 'include',
         headers: {

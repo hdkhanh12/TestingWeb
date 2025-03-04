@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/CustomerTestPage.module.css';
+import { BACKEND_URL } from '../../config';
 
 interface TestPageProps {
   testId: string;
@@ -43,7 +44,7 @@ const CustomerTestPage: React.FC<TestPageProps> = () => {
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -61,7 +62,7 @@ const CustomerTestPage: React.FC<TestPageProps> = () => {
       if (testId) {
         try {
           const csrfToken = await fetchCsrfToken();
-          const response = await fetch(`http://localhost:8080/api/tests/${testId}`, {
+          const response = await fetch(`${BACKEND_URL}/api/tests/${testId}`, {
             method: 'GET',
             credentials: 'include', // Gửi Cookie (JSESSIONID)
             headers: {
@@ -154,7 +155,7 @@ const CustomerTestPage: React.FC<TestPageProps> = () => {
       }
       const testId = test.id;
       const csrfToken = await fetchCsrfToken(); // Lấy token cho submit
-      const response = await fetch(`http://localhost:8080/api/tests/${testId}/submit`, {
+      const response = await fetch(`${BACKEND_URL}/api/tests/${testId}/submit`, {
         method: 'POST',
         credentials: 'include', // Gửi Cookie
         headers: {

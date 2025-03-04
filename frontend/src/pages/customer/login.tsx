@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/CustomerLogin.module.css';
+import { BACKEND_URL } from '../../config';
 
 const CustomerAuth: React.FC = () => {
   const [isRegistering, setIsRegistering] = useState(false);

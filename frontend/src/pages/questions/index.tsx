@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/AdminQuestionsPage.module.css';
+import { BACKEND_URL } from '../../config';
 
 interface Question {
   id: string;
@@ -27,7 +28,7 @@ const QuestionsPage = () => {
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -45,7 +46,7 @@ const QuestionsPage = () => {
     const fetchPackages = async () => {
       try {
         const csrfToken = await fetchCsrfToken();
-        const response = await fetch('http://localhost:8080/api/questions', {
+        const response = await fetch('${BACKEND_URL}/api/questions', {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -97,8 +98,8 @@ const QuestionsPage = () => {
       try {
         const csrfToken = await fetchCsrfToken();
         const url = packageId === 'no-package'
-          ? 'http://localhost:8080/api/questions/no-package'
-          : `http://localhost:8080/api/questions/package/${packageId}`;
+          ? '${BACKEND_URL}/api/questions/no-package'
+          : `${BACKEND_URL}/api/questions/package/${packageId}`;
         const response = await fetch(url, {
           method: 'DELETE',
           credentials: 'include',

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import styles from '../styles/ImportQuestionsPage.module.css';
+import { BACKEND_URL } from '../config';
 
 const ImportQuestionsPage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -8,7 +9,7 @@ const ImportQuestionsPage = () => {
 
   const fetchCsrfToken = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/csrf', {
+      const response = await fetch('${BACKEND_URL}/api/auth/csrf', {
         method: 'GET',
         credentials: 'include',
       });
@@ -50,7 +51,7 @@ const ImportQuestionsPage = () => {
       formData.append('packageName', packageName);
       console.log('FormData:', formData);
 
-      const response = await fetch('http://localhost:8080/api/questions/import/package', {
+      const response = await fetch('${BACKEND_URL}/api/questions/import/package', {
         method: 'POST',
         credentials: 'include',
         headers: {
