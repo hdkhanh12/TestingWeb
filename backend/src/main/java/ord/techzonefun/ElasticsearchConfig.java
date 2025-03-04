@@ -1,4 +1,4 @@
-package ord.techzonefun;
+package ord.techzonefun.Config;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
@@ -34,7 +34,7 @@ public class ElasticsearchConfig {
         return new RestClientTransport(restClient, new JacksonJsonpMapper());
     }
 
-    @Bean
+    @Bean(destroyMethod = "close") // Đảm bảo shutdown đúng cách
     public ElasticsearchClient getElasticsearchClient(ElasticsearchTransport transport) {
         return new ElasticsearchClient(transport);
     }
