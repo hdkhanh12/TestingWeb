@@ -1,60 +1,38 @@
 package ord.techzonefun;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import org.apache.http.HttpHost;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.elasticsearch.client.RestClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.elc.ElasticsearchClients;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "ord.techzonefun.Repositories")
 public class ElasticsearchConfig {
 
     @Bean
-    public RestClient getRestClient() {
-        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
+    public ElasticsearchClient elasticsearchClient() {
+        BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(AuthScope.ANY,
                 new UsernamePasswordCredentials("elastic", "WlV3R1g1VUJGUUpBM0ZNeXpZTGU6dnVZWTNPZVdrY3ROcDI2eFRNQnBoUQ=="));
 
-        return RestClient.builder(
-                        new HttpHost("my-elasticsearch-project-c216e8.es.ap-southeast-1.aws.elastic.cloud", 443, "https"))
-                .setHttpClientConfigCallback(httpClientBuilder ->
-                        httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider)
                 .build();
-    }
 
-    @Bean
-    public ElasticsearchTransport getElasticsearchTransport(RestClient restClient) {
-        return new RestClientTransport(restClient, new JacksonJsonpMapper());
-    }
+        RestClient restClient = RestClient.builder(
+                        new org.apache.http.HttpHost("my-elasticsearch-project-c216e8.es.ap-southeast-1.aws.elastic.cloud", 443, "https"))
+                .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credsProvider))
+                .build();
 
-    @Bean(destroyMethod = "close") // Đảm bảo shutdown đúng cách
-    public ElasticsearchClient getElasticsearchClient(ElasticsearchTransport transport) {
+        RestClientTransport transport = new RestClientTransport(
+                restClient, new JacksonJsonpMapper());
+
         return new ElasticsearchClient(transport);
-    }
-
-    @Bean
-    public ClientConfiguration clientConfiguration(RestClient restClient) {
-        return ClientConfiguration.builder()
-                .connectedTo("my-elasticsearch-project-c216e8.es.ap-southeast-1.aws.elastic.cloud:443")
-                .usingSsl()
-                .withBasicAuth("elastic", "WlV3R1g1VUJGUUpBM0ZNeXpZTGU6dnVZWTNPZVdrY3ROcDI2eFRNQnBoUQ==")
-                .build();
-    }
-
-    @Bean
-    public ElasticsearchRestTemplate elasticsearchTemplate(ClientConfiguration clientConfiguration) {
-        return new ElasticsearchRestTemplate(ElasticsearchClients.createRestClient(clientConfiguration));
     }
 }
