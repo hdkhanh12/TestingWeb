@@ -14,9 +14,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchClients;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
+@EnableElasticsearchRepositories(basePackages = "ord.techzonefun.Repositories")
 public class ElasticsearchConfig {
 
     @Bean
@@ -37,7 +39,7 @@ public class ElasticsearchConfig {
         return new RestClientTransport(restClient, new JacksonJsonpMapper());
     }
 
-    @Bean
+    @Bean(destroyMethod = "close") // Đảm bảo shutdown đúng cách
     public ElasticsearchClient getElasticsearchClient(ElasticsearchTransport transport) {
         return new ElasticsearchClient(transport);
     }
@@ -51,4 +53,8 @@ public class ElasticsearchConfig {
                 .build();
     }
 
+    @Bean
+    public ElasticsearchRestTemplate elasticsearchTemplate(ClientConfiguration clientConfiguration) {
+        return new ElasticsearchRestTemplate(ElasticsearchClients.createRestClient(clientConfiguration));
+    }
 }
